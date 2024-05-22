@@ -1,0 +1,43 @@
+---
+title: "unused code"
+author: "Isabella Gonzalez"
+date: "2024-04-25"
+output: html_document
+---
+
+# Deliberate No's
+### Affordable parking/transportation
+```{r}
+alcestis$result <- ifelse((alcestis$`Convenient location`== "Yes" | alcestis$`Timing of the event` == "Yes" | alcestis$Affordability == "Yes") & alcestis$`Accessible parking/transportation` == "No", "Yes", "No")
+
+#18 deliberate no's out of 22
+table(alcestis$result) 
+table(alcestis$`Accessible parking/transportation`)
+```
+
+### Convenient Location
+```{r}
+location <- ifelse(( alcestis$`Accessible parking/transportation` == "Yes" | alcestis$`Timing of the event` == "Yes" | alcestis$Affordability == "Yes") & alcestis$`Convenient location`== "No", "Yes", "No")
+
+# 3 deliberate no's out of 7
+table(location)
+table(alcestis$`Convenient location`)
+```
+
+### Timing of the event
+```{r}
+timing <- ifelse(( alcestis$`Accessible parking/transportation` == "Yes" |alcestis$`Convenient location`== "Yes" | alcestis$Affordability == "Yes") & alcestis$`Timing of the event` == "No", "Yes", "No")
+
+#9 deliberate no's out of 13
+table(timing)
+table(alcestis$`Timing of the event`)
+```
+
+### Affordability
+```{r}
+affordability <- ifelse(( alcestis$`Accessible parking/transportation` == "Yes" |alcestis$`Convenient location`== "Yes" |alcestis$`Timing of the event` == "Yes" ) & alcestis$Affordability == "No", "Yes", "No")
+
+#10 deliberate no's out of 14
+table(affordability)
+table(alcestis$`Affordability`)
+```

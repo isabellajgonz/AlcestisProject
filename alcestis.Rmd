@@ -1,0 +1,182 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+
+```{r, echo = FALSE, results =  'hide'}
+
+library(tidyverse)
+library(readr)
+alcestis <- read_csv("C:/Users/Bella/Desktop/school spring 2024/Alcestis.csv")
+```
+
+# Survey Distribution
+Here I wanted to show we heard from a pretty equal amount of participants from each location - which is good. We won't have the results of a location skewing the data, or producing too many outliers. 
+
+```{r, echo = FALSE}
+location<-factor(alcestis$Location, levels = c("AS", "CHPL", "WL1","FL"))
+table(location)
+
+df2<-data.frame(
+  Location =  c("Alcestis Show", "Chapel Hill Public Library", "Wilson Library","Flyleaf Book"),
+  Number_of_Surveys = c(10,11,7,6)
+)
+
+ggplot(df2, aes(x="", y=Number_of_Surveys, fill=Location)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)+
+  scale_fill_brewer(palette = "YlGnBu") 
+  
+```
+
+# Attendance
+24 polls contained the question "Will you attend again in the future?" 23 answered yes, and only 1 maybe. 
+
+```{r, echo = FALSE, results = 'hide'}
+
+yes_no<-alcestis$`Will you attend again in the future`
+yes_no_column <- factor(yes_no, levels = c("Yes","No", "Maybe"))
+counts<-table(yes_no_column)
+```
+
+```{r, echo = FALSE}
+df<-data.frame(
+  Attend_again  = c("Yes","Maybe", "No"),
+  count = c(23,1,0)
+)
+
+library(RColorBrewer)
+coul <- brewer.pal(3, "Paired")
+barplot(height = df$count, names = df$Attend_again, xlab = "Will You Attend Again In The Future?", ylim = c(0,25), col = coul)
+```
+
+# Demographics
+The 45-64 age range had the least amount of participants and attendees. From the graph we can see that the vast majority of the 65+  participants were highly educated, doctoral degree's and beyond. The 25-34 age range also had a majority of participants and attendees with post-bachelor's degrees.
+
+```{r, echo = FALSE}
+library(ggplot2)
+ggplot(alcestis, aes(fill=alcestis$`Highest level of education`, x=alcestis$`Age Group`)) + 
+    geom_bar(position="stack") +xlab("Age Group") +ylab("Total in Age Group") +labs(fill = "Highest Level of Education")+ scale_fill_brewer(palette = "YlGnBu")
+```
+
+
+# How did you hear about the event?
+This was a question in which people circled multiple answers. Word of mouth was the most popular answer, second to an email newsletter. 
+```{r, echo = FALSE, results = 'hide'}
+table(alcestis$`Social Media`)
+table(alcestis$`Word of mouth`)
+table(alcestis$`Email Newsletter`)
+table(alcestis$`Website or  online search`)
+table(alcestis$`Poster or flyer`)
+table(alcestis$Other...8)
+```
+
+
+```{r, echo = FALSE}
+df3<-data.frame(
+  y = c(0,17,9,5,2,5,1),
+  x = c("Social Media", "Word of Mouth", " Email Newsletter",  "Website or Online Search", "Poster or Flyer", "Class", "CLE"))
+
+ggplot(df3, aes(x=x, y=y)) +
+  geom_segment(aes(x=x, xend=x, y=0, yend=y), color = "#1D91C0", linewidth = 3) +
+   geom_point(color = "#225EA8", size = 4.5) + 
+  coord_flip()+
+  xlab("") + 
+  ylab("")+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank())
+```
+
+# Why did you attened this event?
+Interest in the arts was the most circled answer by far, following an almost tie between Supporting family/friends and socializing in the community. I think it's good to see that people do want to be involved in the community and that people are driven by interest in the arts. It's promising for future arts events. Some people did come for CLE credit.  
+
+```{r, echo = FALSE, results = 'hide'}
+table(alcestis$`Interest in the arts`)
+table(alcestis$`Supporting family/friends`)
+table(alcestis$`Socializing in the community`)
+table(alcestis$`Supporting local events`)
+table(alcestis$Other...13)
+
+```
+
+```{r, echo = FALSE}
+df4<- data.frame(
+  x = c("Interest in the arts", "Supporting family/friends", "Socializing in the community", "Supporting local events", "Class", "CLE"),
+  y = c(22, 9, 10, 6, 4, 1)
+)
+
+ggplot(df4, aes(x=x, y=y)) +
+  geom_segment(aes(x=x, xend=x, y=0, yend=y), color = "#1D91C0", linewidth = 3) +
+   geom_point(color = "#225EA8", size = 4.5) + 
+  coord_flip()+
+  xlab("") + 
+  ylab("")+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank())
+```
+
+# What factors supported your attendance at this event?
+Location and timing were great factors in supporting people's attendance of this event. Most of the surveys had at least one of the factors circled, which I think can point to considering people's needs does support attendance of these events. 
+```{r, echo = FALSE, results = 'hide'}
+table(alcestis$`Convenient location`)
+table(alcestis$`Timing of the event`)
+table(alcestis$Affordability)
+table(alcestis$`Accessible parking/transportation`)
+table(alcestis$Other...18)
+```
+
+```{r,echo = FALSE}
+df5 <- data.frame(
+  x = c("Convenient Location", "Timing of the event", "Affordability", "Accessible parking/transportation"),
+  y = c(27,21,20,12)
+)
+
+ggplot(df5, aes(x=x, y=y)) +
+  geom_segment(aes(x=x, xend=x, y=0, yend=y), color = "#1D91C0", linewidth = 3) +
+   geom_point(color = "#225EA8", size = 4.5) + 
+  coord_flip()+
+  xlab("") + 
+  ylab("")+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.x = element_blank())
+```
+
+
+# By Location 
+I wanted to see if support factor answer differed by location. For accessible parking/transportation we can see a considerable difference between Yes's on campus (AS WL1) and off-campus (CHPL, FL). 
+
+```{r, echo = FALSE}
+
+l<- ggplot(alcestis, aes(fill=`Convenient location`, x=Location)) +
+    geom_bar(position="stack") +xlab("Location") +ylab("Convenient Location") +labs(fill = "Is this a support factor?")+ scale_fill_brewer(palette = "Paired")
+
+t<-ggplot(alcestis, aes(fill=`Timing of the event`, x=Location)) + 
+    geom_bar(position="stack") +xlab("Location") +ylab("Timing of the event") +labs(fill = "Is this a support factor?")+ scale_fill_brewer(palette = "Paired")
+
+a<-ggplot(alcestis, aes(fill=`Affordability`, x=Location)) + 
+    geom_bar(position="stack") +xlab("Location") +ylab("Affordability") +labs(fill = "Is this a support factor?")+ scale_fill_brewer(palette = "Paired")
+
+p<-ggplot(alcestis, aes(fill=`Accessible parking/transportation`, x=Location)) + 
+    geom_bar(position="stack") +xlab("Location") +ylab("Accessible parking/transportation") +labs(fill = "Is this a support factor?")+ scale_fill_brewer(palette = "Paired")
+
+
+library(gridExtra)
+o<-grid.arrange(l, t, a, p, nrow = 2, ncol = 2)
+
+ggsave("C:/Users/Bella/Pictures/as.PNG", plot = o, width = 10, height = 6, dpi = 300)
+```
+
+```{r}
+as<-subset(alcestis, Location == "WL1") 
+as
+```
