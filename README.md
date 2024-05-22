@@ -1,2 +1,2 @@
 # AlcestisProject
-Volunteer Project. Analysis of survey data
+Volunteer Project. Analysis of survey data.
